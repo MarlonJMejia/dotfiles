@@ -1,0 +1,118 @@
+# Extract
+extract() {
+ if [ -z "$1" ]; then
+    # display usage if no parameters given
+    echo "Usage: extract <path/file_name>.<zip|rar|bz2|gz|tar|tbz2|tgz|Z|7z|xz|ex|tar.bz2|tar.gz|tar.xz>"
+    echo "       extract <path/file_name_1.ext> [path/file_name_2.ext] [path/file_name_3.ext]"
+    return 1
+ else
+    for n in $@
+    do
+      if [ -f "$n" ] ; then
+          case "${n%,}" in
+            *.tar.bz2|*.tar.gz|*.tar.xz|*.tbz2|*.tgz|*.txz|*.tar) 
+                         tar xvf "$n"       ;;
+            *.lzma)      unlzma ./"$n"      ;;
+            *.bz2)       bunzip2 ./"$n"     ;;
+            *.rar)       unrar x -ad ./"$n" ;;
+            *.gz)        gunzip ./"$n"      ;;
+            *.zip)       unzip ./"$n"       ;;
+            *.z)         uncompress ./"$n"  ;;
+            *.7z|*.arj|*.cab|*.chm|*.deb|*.dmg|*.iso|*.lzh|*.msi|*.rpm|*.udf|*.wim|*.xar)
+                         7z x ./"$n"        ;;
+            *.xz)        unxz ./"$n"        ;;
+            *.exe)       cabextract ./"$n"  ;;
+            *)
+                         echo "extract: '$n' - unknown archive method"
+                         return 1
+                         ;;
+          esac
+      else
+          echo "'$n' - file does not exist"
+          return 1
+      fi
+    done
+fi
+}
+# Enable github login
+glogin() {
+	ssh_id=($(pgrep ssh-agent))
+	ssh_sock=($(find /tmp/ssh-* -name "agent.*" | sort -r))
+	if [[ "${#ssh_id[@]}" -gt 0 && ${#ssh_sock[@]} -gt 0 ]] ; then
+		export SSH_AGENT_PID=${ssh_id[@]:0:1}
+		export SSH_AUTH_SOCK=${ssh_sock[@]:0:1}
+	else
+		eval "$(ssh-agent -s)"
+		ssh-add ~/.ssh/github
+	fi
+}
+# Automatic updates with github
+gupdate() {
+	git add .
+	if  [ -z "$1" ]; then
+	  git commit -am "Update"
+	fi
+	git commit -am "$1"
+	git push
+}
+# Create a symbolic link to your windows user folder. 
+create_winhome() {
+	# Output: C:\Users\Username\
+	wHomeWinPath=$(pwsh.exe -c 'Get-Variable Home | Select-Object -ExpandProperty Value' | tr -d '\r')
+	# Converts to /mnt/c/Users/illegal
+	WIN_HOME=$(wslpath -u "${wHomeWinPath}")
+	# Outputs: /home/user/winhome
+	win_home_lnk=${HOME}/winhome
+
+	if [ ! -e "${win_home_lnk}" ]; then
+		echo "Windows home directory does not exist. \n Creating Symbolic link."
+		ln -s -f "${WIN_HOME}" "${win_home_lnk}"
+	else
+		echo 'Windows home directory already exists'
+	fi
+}
+# Define the function
+portcheck() {
+  # Prompt the user for the IP address
+  read "ip?Please enter the IP address: "
+  # Prompt the user for the port number
+  read "port?Please enter the port number: "
+  # Define the URL
+  url="https://portchecker.io/api/v1/query"
+  # Construct the JSON payload
+  json_data=$(jq -n --arg ip "$ip" --argjson port "$port" '{host: $ip, ports: [$port]}')
+  # Display the JSON payload for debugging
+  echo "JSON payload: $json_data"
+  # Execute the curl command with the updated JSON data
+  curl -X 'POST' "$url" \
+       -H 'accept: application/json' \
+       -H 'Content-Type: application/json' \
+       -d "$json_data"
+}
+# IPInfo requests
+publicip() {
+	ipinfo=$(curl "https://api.ipapi.is" -s | jq .ip)
+	echo "Your public ip address: ${ipinfo}"	
+	echo $test
+}
+
+ipinfo() {
+	curl "https://api.ipapi.is?q=$1" -s | jq
+}
+# Auto completion
+eval "$(kopia --completion-script-zsh)"
+# Aliases
+alias ls="ls --color=auto -nihsFZ"
+alias history="history -i" # show date
+alias sre="source ~/.zshextra"
+alias fd='fd -u'
+alias rg='rg -uuu'
+alias curlO='curl -O -LsS'
+#Bindkeys
+bindkey -e
+bindkey "^[[1;5D" backward-word
+bindkey "^[[1;5C" forward-word
+# VSCode nonsense
+#eval "$(direnv hook zsh)"
+# Executing functions
+glogin
