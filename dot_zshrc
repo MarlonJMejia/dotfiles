@@ -73,12 +73,17 @@ setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
 setopt INC_APPEND_HISTORY # Append command to history without waiting for shell to exit
+#setopt interactivecomments # Allow comments via #
 # Extra files
 [ -f ~/.zshextra ] && source ~/.zshextra
 
 # Autocomplete
 if command -v rustic >/dev/null 2>&1; then
 	source <(rustic completions zsh 2>/dev/null)
+fi
+
+if command -v chezmoi >/dev/null 2>&1; then
+	source <(chezmoi completion zsh 2>/dev/null)
 fi
 
 # compile .zshrc
