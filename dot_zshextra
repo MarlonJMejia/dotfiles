@@ -36,6 +36,9 @@ fi
 }
 ## Enable github login
 glogin() {
+	if ! pgrep ssh-agent > /dev/null; then
+		rm /tmp/ssh-agent.$( hostname ).sock
+	fi
         export SSH_AUTH_SOCK=/tmp/ssh-agent.$( hostname ).sock
         ssh-add -l 2>/dev/null >/dev/null
         if [ $? -ge 2 ]; then
@@ -106,6 +109,7 @@ alias fd='fd -u'
 alias rg='rg -uuu'
 alias curlO='curl -O -LsS'
 alias clear='echo stop it'
+alias gstatus='git status'
 #Bindkeys
 bindkey -e
 bindkey "^[[1;5D" backward-word
