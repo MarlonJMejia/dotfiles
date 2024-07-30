@@ -1,0 +1,140 @@
+# ~/.config/starship.toml
+format = """
+[░▒▓](#a3aed2)\
+$username(bg:#769ff0 fg:#a3aed2)\
+[](bg:#a3aed2 fg:#0f172a bold )\
+$hostname(bg:#769ff0 fg:#a3aed2)\
+$battery\
+$container\
+[](bg:#769ff0 fg:#a3aed2)\
+$directory\
+[](fg:#769ff0 bg:#394260)\
+$git_branch\
+$git_status\
+[](fg:#394260 )\
+$fill\
+[ ](fg:#1d2230)\
+$nodejs\
+$python\
+$rust\
+$golang\
+$php\
+$jobs\
+$cmd_duration\ 
+$time\
+[ ](fg:#1d2230)\
+\n$character"""
+
+[fill]
+symbol = " "
+# style = "bg:#1d2230"
+
+[jobs]
+number_threshold = 1
+style = "fg:#769ff0 bg:#1d2230"
+format = "[$symbol $number]($style)"
+
+[directory]
+style = "fg:#0f172a bold bg:#769ff0"
+format = "[ $path ]($style)"
+truncation_length = 1 
+truncation_symbol = "…/"
+
+[directory.substitutions]
+"Documents" = " "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+
+[python]
+format = '[${symbol}(${version})($virtualenv )]($style)'
+style = "fg:#4B8BBE bg:#1d2230"
+pyenv_version_name = true
+
+[nodejs]
+style = "fg:#3C873A bg:#1d2230"
+format = '[ $symbol ($version) ]($style)'
+
+[rust]
+# symbol = ""
+style = "fg:#FFD6A4 bg:#1d2230"
+format = '[ $symbol ($version) ]($style)'
+
+[golang]
+# symbol = "ﳑ"
+style = "fg:#29BEB0 bg:#1d2230"
+format = '[ $symbol ($version) ]($style)'
+
+[php]
+# symbol = ""
+style = "fg:#769ff0 bg:#1d2230"
+format = '[ $symbol ($version) ]($style)'
+
+[time]
+disabled = false
+# time_format = "%R" # Hour:Minute Format
+style = "fg:cyan bg:#1d2230"
+format = '[  $time ]($style)'
+
+[battery]
+full_symbol = "󰂄"
+charging_symbol = "󱊥"
+discharging_symbol = "󰁺"
+format = "[ $symbol $percentage ]($style)"
+
+[[battery.display]]
+threshold = 11
+style= "bg:#a3aed2 fg:#991b1b"
+
+[character]
+error_symbol = "[󰅖](bold red) "
+success_symbol = "[](cyan)"
+
+[cmd_duration]
+min_time = 10  # Show command duration over 10 milliseconds 
+format = "[$symbol $duration]($style)"
+style = "fg:bold dimmed white bg:#1d2230"
+
+[git_branch]
+format = '[ $symbol $branch ]($style)'
+style = "fg:cyan bg:#394260"
+# ignore_branches = ['master', 'main']
+
+[git_status]
+format = '[($all_status$ahead_behind )]($style)'
+style = "fg:cyan bg:#394260"
+
+[git_commit]
+commit_hash_length = 8
+style = "bold white"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)($style)\) '
+style = "bright-black"
+
+[hostname]
+ssh_only = false
+format = "[ $hostname]($style)"
+trim_at = "-"
+# style = "fg:green"
+style= "fg:#0f172a bg:#a3aed2"
+# disabled = true
+
+[memory_usage]
+format = "$symbol[${ram}( | ${swap})]($style) "
+threshold = 0
+style = "#a3aed2"
+disabled = false
+
+[package]
+disabled = false
+
+[username]
+style_user= "fg:#4338ca bold bg:#a3aed2 bold"
+style_root = "fg:red bold bg:#a3aed2 bold"
+format = "[$user]($style)"
+show_always = true
+
+[container]
+format = '[$symbol \[$name\]]($style)'
+style= "fg:#0f172a bg:#a3aed2"
