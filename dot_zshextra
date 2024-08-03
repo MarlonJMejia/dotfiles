@@ -114,5 +114,3 @@ bindkey "^[[1;5D" backward-word
 bindkey "^[[1;5C" forward-word
 # VSCode nonsense
 #eval "$(direnv hook zsh)"
-zinit ice atclone"rustic completions zsh > $HOME/.config/rustic.zsh" \
-	    atpull'%atclone' pick"$HOME/.config/rustic.zsh" nocompile'!' 
