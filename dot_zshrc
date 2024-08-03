@@ -2,12 +2,7 @@
 EDITOR=nvim
 GOPATH="/home/illegal/go"
 PATH=$PATH:"/home/illegal/.local/bin"
-source ~/.fzf/fzf-tab.plugin.zsh
-# Autocomplete FZF
-if which fzf >/dev/null 2>&1; then
-	source <(fzf --zsh)
-fi
-
+autoload -Uz compinit && compinit
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
@@ -36,17 +31,20 @@ zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 # Other Plugins
-zinit ice wait
-zinit param'zs_set_path' for @psprint/zsh-sweep
+zinit param'zs_set_path' for @psprint/zsh-sweep # Shellcheck Alternative
 zinit light Aloxaf/fzf-tab
 # Load completions
-autoload -Uz compinit && compinit
 # Completion styling
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+#zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':completion:*' menu no
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
-zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
+## apply to all command
+zstyle ':fzf-tab:*' popup-min-size 50 8
+# only apply to 'diff'
+zstyle ':fzf-tab:complete:diff:*' popup-min-size 80 12
+#zstyle ':completion:*' menu no
+#zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+#zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 # History
 export HISTSIZE=100000
 export HISTFILE=~/.zsh_history
@@ -63,12 +61,6 @@ setopt INC_APPEND_HISTORY # Append command to history without waiting for shell 
 #setopt interactivecomments # Allow comments via #
 # Extra files
 [ -f ~/.zshextra ] && source ~/.zshextra
-
-# Autocomplete
-if command -v rustic >/dev/null 2>&1; then
-	source <(rustic completions zsh 2>/dev/null)
-fi
-
-if command -v chezmoi >/dev/null 2>&1; then
-	source <(chezmoi completion zsh 2>/dev/null)
-fi
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+[ -f ~/.config/completions/chezmoi.zsh ] && source ~/.config/completions/chezmoi.zsh
+[ -f ~/.config/completions/rustic.zsh ] && source ~/.config/completions/rustic.zsh
