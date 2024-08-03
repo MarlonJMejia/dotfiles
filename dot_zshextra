@@ -99,10 +99,8 @@ publicip() {
 ipinfo() {
 	curl "https://api.ipapi.is?q=$1" -s | jq
 }
-# Auto completion
-eval "$(kopia --completion-script-zsh)"
 # Aliases
-alias ls="ls --color=auto -nihsFZ"
+alias ll="ls --color=auto -nihsFZ"
 alias history="history -i" # show date
 alias sre="source ~/.zshextra"
 alias fd='fd -u'
@@ -116,5 +114,5 @@ bindkey "^[[1;5D" backward-word
 bindkey "^[[1;5C" forward-word
 # VSCode nonsense
 #eval "$(direnv hook zsh)"
-# Executing functions
-glogin
+zinit ice atclone"rustic completions zsh > $HOME/.config/rustic.zsh" \
+	    atpull'%atclone' pick"$HOME/.config/rustic.zsh" nocompile'!' 
