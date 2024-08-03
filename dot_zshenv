@@ -1,0 +1,5 @@
+. "$HOME/.cargo/env"
+# Environment variables
+EDITOR=nvim
+GOPATH="/home/illegal/go"
+PATH=$PATH:"/home/illegal/.local/bin"
