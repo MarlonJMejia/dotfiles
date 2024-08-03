@@ -59,6 +59,6 @@ setopt hist_find_no_dups
 # Extra files
 [ -f ~/.zshextra ] && source ~/.zshextra
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -d ~/.config/completions/ ] && source ~/.config/completions/*.zsh
+[ -d ~/.config/completions ] && for i in ~/.config/completions/*; do source ${i}; done
 # Compile everything last
 #zcompile ~/.zsh* ~/.zprofile
