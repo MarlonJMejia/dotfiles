@@ -3,10 +3,6 @@ EDITOR=nvim
 GOPATH="/home/illegal/go"
 PATH=$PATH:"/home/illegal/.local/bin"
 source ~/.fzf/fzf-tab.plugin.zsh
-
-# Load history in background
-(fc -R &)
-
 # Autocomplete FZF
 if which fzf >/dev/null 2>&1; then
 	source <(fzf --zsh)
@@ -43,15 +39,6 @@ zinit light zsh-users/zsh-autosuggestions
 zinit ice wait
 zinit param'zs_set_path' for @psprint/zsh-sweep
 zinit light Aloxaf/fzf-tab
-# Add in snippets
-zinit ice wait for \
-	zinit snippet OMZP::git \
-	zinit snippet OMZP::sudo \
-	zinit snippet OMZP::archlinux \
-	zinit snippet OMZP::aws \
-	zinit snippet OMZP::kubectl \
-	zinit snippet OMZP::kubectx \
-zinit snippet OMZP::command-not-found
 # Load completions
 autoload -Uz compinit && compinit
 # Completion styling
@@ -85,6 +72,3 @@ fi
 if command -v chezmoi >/dev/null 2>&1; then
 	source <(chezmoi completion zsh 2>/dev/null)
 fi
-
-# compile .zshrc
-zcompile ~/.zshrc 
