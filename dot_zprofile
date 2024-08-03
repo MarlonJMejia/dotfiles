@@ -1,0 +1,11 @@
+# Verify there is a runnign ssh-agent process, if not remove socket.
+if ! pgrep ssh-agent > /dev/null; then
+	rm /tmp/ssh-agent.$( hostname ).sock
+fi
+# Auth with current socket
+export SSH_AUTH_SOCK=/tmp/ssh-agent.$( hostname ).sock
+ssh-add -l 2>/dev/null >/dev/null
+if [ $? -ge 2 ]; then
+  ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
+  ssh-add ~/.ssh/github
+fi
