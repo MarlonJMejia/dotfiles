@@ -41,7 +41,7 @@ truncation_length = 1
 truncation_symbol = "…/"
 
 [directory.substitutions]
-"Documents" = " "
+"Documents" = " "
 "Downloads" = " "
 "Music" = " "
 "Pictures" = " "
@@ -61,7 +61,7 @@ style = "fg:#FFD6A4 bg:#1d2230"
 format = '[ $symbol ($version) ]($style)'
 
 [golang]
-# symbol = "ﳑ"
+# symbol = "󰟓"
 style = "fg:#29BEB0 bg:#1d2230"
 format = '[ $symbol ($version) ]($style)'
 
