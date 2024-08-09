@@ -34,17 +34,17 @@ extract() {
     done
 fi
 }
-## Enable github login
+# Enable github login
 glogin() {
-	if ! pgrep ssh-agent > /dev/null; then
-		rm /tmp/ssh-agent.$( hostname ).sock
+	ssh_id=($(pgrep ssh-agent))
+	ssh_sock=($(find /tmp/ssh-* -name "agent.*" | sort -r))
+	if [[ "${#ssh_id[@]}" -gt 0 && ${#ssh_sock[@]} -gt 0 ]] ; then
+		export SSH_AGENT_PID=${ssh_id[@]:0:1}
+		export SSH_AUTH_SOCK=${ssh_sock[@]:0:1}
+	else
+		eval "$(ssh-agent -s)"
+		ssh-add ~/.ssh/github
 	fi
-        export SSH_AUTH_SOCK=/tmp/ssh-agent.$( hostname ).sock
-        ssh-add -l 2>/dev/null >/dev/null
-        if [ $? -ge 2 ]; then
-          ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
-          ssh-add ~/.ssh/github
-        fi
 }
 # Automatic updates with github
 gupdate() {
@@ -99,19 +99,20 @@ publicip() {
 ipinfo() {
 	curl "https://api.ipapi.is?q=$1" -s | jq
 }
+# Auto completion
+eval "$(kopia --completion-script-zsh)"
 # Aliases
-alias less='less -r'
-alias ll="ls --color=auto -nihsFZ"
+alias ls="ls --color=auto -nihsFZ"
 alias history="history -i" # show date
 alias sre="source ~/.zshextra"
 alias fd='fd -u'
 alias rg='rg -uuu'
 alias curlO='curl -O -LsS'
-alias clear='echo stop it'
-alias gstatus='git status'
 #Bindkeys
 bindkey -e
 bindkey "^[[1;5D" backward-word
 bindkey "^[[1;5C" forward-word
 # VSCode nonsense
 #eval "$(direnv hook zsh)"
+# Executing functions
+glogin

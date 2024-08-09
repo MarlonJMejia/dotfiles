@@ -2,4 +2,5 @@
 # Environment variables
 EDITOR=nvim
 GOPATH="/home/illegal/go"
+GOROOT="/usr/local/go"
 PATH=$PATH:"/home/illegal/.local/bin"

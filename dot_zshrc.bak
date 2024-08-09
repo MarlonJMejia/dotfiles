@@ -1,3 +1,16 @@
+# Environment variables
+GOPATH="/home/illegal/go"
+PATH=$PATH:"/home/illegal/.local/bin"
+source ~/.fzf/fzf-tab.plugin.zsh
+
+# Load history in background
+(fc -R &)
+
+# Autocomplete FZF
+if which fzf >/dev/null 2>&1; then
+	source <(fzf --zsh)
+fi
+
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
@@ -11,57 +24,61 @@ autoload -Uz _zinit
 (( ${+_comps} )) && _comps[zinit]=_zinit
 # Load a few important annexes, without Turbo
 # (this is currently required for annexes)
-#zinit light-mode for \
-#    zdharma-continuum/zinit-annex-as-monitor \
-#    zdharma-continuum/zinit-annex-bin-gem-node \
-#    zdharma-continuum/zinit-annex-patch-dl \
-#    zdharma-continuum/zinit-annex-rust
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
 # Add in starship
 zinit ice as"command" from"gh-r" \
           atclone"./starship init zsh > init.zsh; ./starship completions zsh > _starship" \
           atpull"%atclone" src"init.zsh"
 zinit light starship/starship
 # Add in zsh plugins
-zinit ice wait lucid blockf
-#zinit load zsh-users/zsh-syntax-highlighting
-zinit light z-shell/F-Sy-H
-# subtring search
-zinit ice wait lucid blockf
-zinit load zsh-users/zsh-completions
-zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay"
-zinit load zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
 # Other Plugins
-zinit param'zs_set_path' for @psprint/zsh-sweep # Shellcheck Alternative
- ## FZF
-zinit pack"binary" for fzf # fzf installation
-source <(fzf --zsh)
-zi ice lucid wait has'fzf'
+zinit ice wait
+zinit param'zs_set_path' for @psprint/zsh-sweep
 zinit light Aloxaf/fzf-tab
+# Add in snippets
+zinit ice wait for \
+	zinit snippet OMZP::git \
+	zinit snippet OMZP::sudo \
+	zinit snippet OMZP::archlinux \
+	zinit snippet OMZP::aws \
+	zinit snippet OMZP::kubectl \
+	zinit snippet OMZP::kubectx \
+zinit snippet OMZP::command-not-found
+# Load completions
+autoload -Uz compinit && compinit
 # Completion styling
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
-zstyle ':fzf-tab:*' fzf-command ftb-tmux-popup
-#zstyle ':fzf-tab:*' popup-min-size 50 8
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 # History
 export HISTSIZE=100000
-export HISTFILE=~/.zhistory
+export HISTFILE=~/.zsh_history
 export SAVEHIST=$HISTSIZE
 export HISTDUP=erase # Erase duplicates
 setopt appendhistory
-setopt INC_APPEND_HISTORY # Append command to history without waiting for shell to exit
 setopt sharehistory
 setopt hist_ignore_space
 setopt hist_ignore_all_dups
 setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
-setopt extended_history       # record timestamp of command in HISTFILE
-setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
-#setopt interactivecomments # Allow comments via #
+setopt INC_APPEND_HISTORY # Append command to history without waiting for shell to exit
 # Extra files
-autoload -U compinit && compinit
 [ -f ~/.zshextra ] && source ~/.zshextra
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -d ~/.config/completions ] && for i in ~/.config/completions/*; do source ${i}; done
-# Compile everything last
-#zcompile ~/.zsh* ~/.zprofile
-zmodload zsh/zprof
+
+# Autocomplete
+if command -v rustic >/dev/null 2>&1; then
+	source <(rustic completions zsh 2>/dev/null)
+fi
+
+# compile .zshrc
+zcompile ~/.zshrc 
