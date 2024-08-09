@@ -63,5 +63,5 @@ autoload -U compinit && compinit
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 [ -d ~/.config/completions ] && for i in ~/.config/completions/*; do source ${i}; done
 # Compile everything last
-#zcompile ~/.zsh* ~/.zprofile
+zcompile ~/.zsh* ~/.zprofile
 zmodload zsh/zprof
