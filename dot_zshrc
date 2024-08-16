@@ -1,3 +1,4 @@
+autoload -Uz compinit && compinit -C
 ### Added by Zinit's installer
 if [[ ! -f $HOME/.local/share/zinit/zinit.git/zinit.zsh ]]; then
     print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
@@ -22,19 +23,15 @@ zinit ice as"command" from"gh-r" \
           atpull"%atclone" src"init.zsh"
 zinit light starship/starship
 # Add in zsh plugins
-zinit ice wait lucid blockf
-#zinit load zsh-users/zsh-syntax-highlighting
 zinit light z-shell/F-Sy-H
 # subtring search
-zinit ice wait lucid blockf
-zinit load zsh-users/zsh-completions
-zinit ice wait lucid atinit"ZINIT[COMPINIT_OPTS]=-C; zicompinit; zicdreplay"
-zinit load zsh-users/zsh-autosuggestions
+zinit ice wait lucid blockf for \
+	#zinit light zsh-users/zsh-completions
+	zinit light zsh-users/zsh-autosuggestions
 # Other Plugins
 zinit param'zs_set_path' for @psprint/zsh-sweep # Shellcheck Alternative
- ## FZF
+## FZF
 zinit pack"binary" for fzf # fzf installation
-source <(fzf --zsh)
 zi ice lucid wait has'fzf'
 zinit light Aloxaf/fzf-tab
 # Completion styling
@@ -58,10 +55,10 @@ setopt extended_history       # record timestamp of command in HISTFILE
 setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
 #setopt interactivecomments # Allow comments via #
 # Extra files
-autoload -U compinit && compinit
 [ -f ~/.zshextra ] && source ~/.zshextra
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -d ~/.config/completions ] && for i in ~/.config/completions/*; do source ${i}; done
+[ -d $HOME/.config/completions ] && for i in $HOME/.config/completions/*; do source "${i}"; done
 # Compile everything last
-zcompile ~/.zsh* ~/.zprofile
-zmodload zsh/zprof
+zinit ice wait lucid blockf for \
+	zmodload zsh/zprof
+	zcompile ~/.zsh* ~/.zprofile

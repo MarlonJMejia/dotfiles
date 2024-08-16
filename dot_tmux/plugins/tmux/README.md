@@ -55,7 +55,8 @@ If you do not have a patched font installed, you can override or remove any icon
 2. Add the Catppuccin plugin:
 
 ```bash
-set -g @plugin 'catppuccin/tmux'
+set -g @plugin 'catppuccin/tmux#latest' # See https://github.com/catppuccin/tmux/tags for additional tags
+# set -g @plugin 'catppuccin/tmux' # main branch
 # ...alongside
 set -g @plugin 'tmux-plugins/tpm'
 ```
@@ -185,6 +186,7 @@ Values:
 set -g @catppuccin_window_current_color "#{thm_orange}" # text color
 set -g @catppuccin_window_current_background "#{thm_bg}"
 ```
+Note that color and background fields are swapped when `@catppuccin_window_current_fill` is set to "all".
 
 Values:
 - color - a theme color (`#{thm_<color>}`) or a hexadecimal color value

@@ -99,6 +99,7 @@ publicip() {
 ipinfo() {
 	curl "https://api.ipapi.is?q=$1" -s | jq
 }
+
 # Aliases
 alias less='less -r'
 alias ll="ls --color=auto -nihsFZ"

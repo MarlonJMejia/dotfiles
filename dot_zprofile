@@ -9,3 +9,7 @@ if [ $? -ge 2 ]; then
   ssh-agent -a "$SSH_AUTH_SOCK" >/dev/null
   ssh-add ~/.ssh/github
 fi
+
+if command -v fastfetch >/dev/null 2>&1; then
+	fastfetch
+fi
