@@ -91,9 +91,9 @@ portcheck() {
 }
 # IPInfo requests
 publicip() {
-	ipinfo=$(curl "https://api.ipapi.is" -s | jq .ip)
-	echo "Your public ip address: ${ipinfo}"	
-	echo $test
+	# Alternatively curl "https://api.ipapi.is" -s | jq -r '. | "Your Public IP:\n\(.ip)" '
+	ipinfo=$(curl "https://api.ipapi.is" -s | jq -r .ip)
+	echo "Your public ip address:\n${ipinfo}"
 }
 
 ipinfo() {
